@@ -1,58 +1,111 @@
-// button
+
+const BASE = "https://phi-lab-server.vercel.app/api/v1/lab";
+
+let currentTab = "all";
 
 
+// load issue
 
+const loadIssues = async ()=>{
 
-const loadLessons = () => {
-    fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
-    .then( (res) => res.json())
-    .then( (data) =>  displayLesson(data))
-}
-const displayLesson = (lessons)=>{
-
-    // get the container and container empty
-
-    const levelContainer = document.getElementById("level-container")
-
-    levelContainer.innerHTML = ""
-
-
-
-    //  get into every lesson
-
-   for (let lesson of lessons) {
     
-   console.log(lesson);
+  const res = await fetch(`${BASE}/issues`);
+  const data = await res.json();
 
-        //    1. create element
+  let issues = data.data;
 
-        const btnDiv = document.createElement("div")
+  if (currentTab !== "all") {
+    issues = issues.filter(i => i.status === currentTab);
+  }
 
-        btnDiv.innerHTML = `
+  displayIssues(issues);
 
-
-        <button href="" id= "lesson-btn-${lesson.level_no}" onclick="loadLevelWord(${lesson.level_no})" class="btn btn-outline btn-primary lesson-btn"> Lesson-${lesson.level_no}</button>
-
-
-        
-        `
-
-
-
-
-    // 2. append into container
-
-    levelContainer.append(btnDiv)
-        
-        
-   }
-
-
-
-    console.log(lessons);
-
+    
 
 
 }
 
-loadLessons()
+// display issue
+
+
+const displayIssues = (issues) =>{
+ const container = document.getElementById("issues");
+  container.innerHTML = "";
+
+  document.getElementById("count").innerText = `${issues.length} Issues`;
+
+  issues.forEach(issue => {
+    const div = document.createElement("div");
+    div.className = `card ${issue.status}`;
+
+    div.innerHTML = `
+      <h4>${issue.title}</h4>
+      <p>${issue.description}</p>
+
+      <p><b>Author:</b> ${issue.author}</p>
+      <p><b>Priority:</b> ${issue.priority}</p>
+
+      <span class="label">${issue.label}</span>
+    `;
+
+    div.onclick = () => openModal(issue.id);
+
+    container.appendChild(div);
+
+
+  });
+}
+
+
+
+// call issue
+
+function changeTab(tab, el) {
+  currentTab = tab;
+
+  document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
+  el.classList.add("active");
+
+  loadIssues();
+}
+
+
+
+async function openModal(id) {
+  const res = await fetch(`${BASE}/issue/${id}`);
+  const data = await res.json();
+  const i = data.data;
+
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+
+  content.innerHTML = `
+    <h2>${i.title}</h2>
+    <p>${i.description}</p>
+
+    <p><b>Status:</b> ${i.status}</p>
+    <p><b>Author:</b> ${i.author}</p>
+    <p><b>Priority:</b> ${i.priority}</p>
+    <p><b>Label:</b> ${i.label}</p>
+
+    <button onclick="closeModal()">Close</button>
+  `;
+
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
+}
+
+loadIssues();
+
+
+
+
+
+
+
+
+
+
