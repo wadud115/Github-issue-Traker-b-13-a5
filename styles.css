@@ -6,3 +6,19 @@
   font-family: "Geist", sans-serif;
   
 }
+
+
+
+.tab {
+  padding: 8px 30px;
+  border: none;
+  margin-right: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.tab.active {
+  background: #6c2cff;
+  color: white;
+  
+}
