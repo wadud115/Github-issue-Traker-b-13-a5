@@ -105,7 +105,7 @@
 
 
  <div class="tabs 
-    w-11/12 mx-auto flex justify-center mt-10 bg-[#FFFFFF] rounded-lg p-4 shadow-md">
+    w-11/12 mx-auto flex justify-center md:justify-start mt-10 bg-[#FFFFFF] rounded-lg p-4 shadow-md">
   <button class="tab active" onclick="changeTab('all', this)">All</button>
   <button class="tab" onclick="changeTab('open', this)">Open</button>
   <button class="tab" onclick="changeTab('closed', this)">Closed</button>
@@ -155,6 +155,16 @@
    <div id="issues" class="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 md:gap-3  "></div>
 
    </section>
+
+
+
+
+ <div id="modal" class="fixed inset-0 hidden justify-center items-center bg-transparent  backdrop-blur-0">
+  <!-- Modal Content -->
+  <div class="bg-white  p-5 rounded-lg w-[90%] md:w-[500px] shadow-lg">
+    <div id="modalContent" class="space-y-5"></div>
+  </div>
+</div>
 
 
 

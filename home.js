@@ -60,12 +60,21 @@ const displayIssues = (issues) =>{
     }).join(" ");
 
     div.innerHTML = `
+
+
+    <div class="flex justify-between">
+     <div>  
+        ${issue.status}
+      </div>
      <p class="priority"> ${issue.priority}</p>
+
+     </div>
       <h4 class="font-bold text-xl ">${issue.title}</h4>
       <p class="text-[#64748B]">${issue.description}</p>
 
       
       <div class ="">
+     
       <div class="labels">${labelsHTML}</div>
       </div>
 
@@ -116,6 +125,80 @@ function changeTab(tab, el) {
 
   loadIssues();
 }
+
+
+
+
+async function openModal(id) {
+  const res = await fetch(`${BASE}/issue/${id}`);
+  const data = await res.json();
+  const i = data.data;
+
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modalContent");
+
+
+  
+     const labelsHTML = i.labels.map(label => {
+      return `<span class="label bg-amber-300 p-1 my-3 rounded-sm   ${label.replace(" ", "-")}">${label}</span>`;
+    }).join("  ");
+
+  content.innerHTML = `
+
+    <h2 class="text-xl font-bold">${i.title}</h2>
+
+    <div class= "flex justify-start items-center  gap-3">
+
+     <p class=" bg-green-500 text-white p-2 rounded-xl"> ${i.status}</p>
+   <p><b>Opened by: </b>${i.assignee || i.author}</p>
+
+    <p>${i.updatedAt}</p>
+    
+    
+    </div>
+
+    <div class ="">
+     
+      <div class="labels">${labelsHTML}</div>
+      </div>
+
+
+    <p>${i.description}</p>
+
+
+    <div class=" flex justify-between bg-slate-100 rounded-sm p-4">
+
+<p><b>Assign:</b> ${i.assignee || "N/A"}</p>
+<p><b>Priority:</b> ${i.priority}</p>
+    </div>
+
+    
+    
+    
+
+    <button onclick="closeModal()" class="btn btn-primary mt-3">Close</button>
+  `;
+
+ 
+  modal.classList.remove("hidden"); 
+  modal.classList.add("flex");  
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  
+ 
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+}
+
+// Click outside modal to close
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("modal");
+  if (e.target === modal) {
+    closeModal();
+  }
+});
 
 
 
