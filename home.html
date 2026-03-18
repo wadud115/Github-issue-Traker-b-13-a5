@@ -54,8 +54,10 @@
   <div class="flex gap-4">
 
     <div class="flex gap-2">
-    <input type="text" placeholder="Search issues..." class="input input-bordered w-24 md:w-auto" />
-    </div>
+    <input id="search" type="text" placeholder="Search issues..." class="input input-bordered w-24 md:w-auto" />
+     <button onclick="searchIssue()" class="btn btn-primary "><i class="fa-solid fa-magnifying-glass"></i></button>
+  
+  </div>
 
     <div>
         <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Issue</button>
@@ -116,13 +118,20 @@
     
    </section>
 
+<section class=" bg-[#E4E4E7] w-11/12 mx-auto py-5 ">
 
-   <div id="issues" class="grid"></div>
+   <div id="issues" class="grid "></div>
+
+   </section>
 
 
    <div id="modal" class="modal">
   <div class="modal-content" id="modalContent"></div>
 </div>
+
+
+
+
 
    <script src="./home.js"></script>
 

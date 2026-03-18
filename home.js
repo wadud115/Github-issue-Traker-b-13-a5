@@ -1,4 +1,8 @@
 
+
+
+
+
 const BASE = "https://phi-lab-server.vercel.app/api/v1/lab";
 
 let currentTab = "all";
@@ -18,6 +22,7 @@ const loadIssues = async ()=>{
     issues = issues.filter(i => i.status === currentTab);
   }
 
+  console.log(issues);
   displayIssues(issues);
 
     
@@ -26,6 +31,26 @@ const loadIssues = async ()=>{
 }
 
 // display issue
+
+
+
+
+
+// {
+//     "id": 1,
+//     "title": "Fix navigation menu on mobile devices",
+//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
+//     "status": "open",
+//     "labels": [
+//         "bug",
+//         "help wanted"
+//     ],
+//     "priority": "high",
+//     "author": "john_doe",
+//     "assignee": "jane_smith",
+//     "createdAt": "2024-01-15T10:30:00Z",
+//     "updatedAt": "2024-01-15T10:30:00Z"
+// }
 
 
 const displayIssues = (issues) =>{
@@ -39,13 +64,23 @@ const displayIssues = (issues) =>{
     div.className = `card ${issue.status}`;
 
     div.innerHTML = `
-      <h4>${issue.title}</h4>
-      <p>${issue.description}</p>
+     <p class="priority"> ${issue.priority}</p>
+      <h4 class="font-bold text-xl ">${issue.title}</h4>
+      <p class="text-[#64748B]">${issue.description}</p>
 
-      <p><b>Author:</b> ${issue.author}</p>
-      <p><b>Priority:</b> ${issue.priority}</p>
+      
 
-      <span class="label">${issue.label}</span>
+      
+
+      <p class="text-[#64748B] py-5 mt-5 border-t-2 "><span>#1</span> ${issue.author}</p>
+      
+
+       
+
+      
+      <p class="text-[#64748B]  ">1/15/2024</p>
+
+
     `;
 
     div.onclick = () => openModal(issue.id);
@@ -54,6 +89,18 @@ const displayIssues = (issues) =>{
 
 
   });
+}
+
+
+// search 
+
+async function searchIssue() {
+  const text = document.getElementById("search").value;
+
+  const res = await fetch(`${BASE}/issues/search?q=${text}`);
+  const data = await res.json();
+
+  displayIssues(data.data);
 }
 
 
@@ -71,32 +118,6 @@ function changeTab(tab, el) {
 
 
 
-async function openModal(id) {
-  const res = await fetch(`${BASE}/issue/${id}`);
-  const data = await res.json();
-  const i = data.data;
-
-  const modal = document.getElementById("modal");
-  const content = document.getElementById("modalContent");
-
-  content.innerHTML = `
-    <h2>${i.title}</h2>
-    <p>${i.description}</p>
-
-    <p><b>Status:</b> ${i.status}</p>
-    <p><b>Author:</b> ${i.author}</p>
-    <p><b>Priority:</b> ${i.priority}</p>
-    <p><b>Label:</b> ${i.label}</p>
-
-    <button onclick="closeModal()">Close</button>
-  `;
-
-  modal.style.display = "block";
-}
-
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
 
 loadIssues();
 

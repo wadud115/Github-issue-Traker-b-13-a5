@@ -22,3 +22,46 @@
   color: white;
   
 }
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 0 30px;
+}
+
+
+.card {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border-top: 4px solid gray;
+  cursor: pointer;
+}
+
+.card.open {
+  border-top: 4px solid green;
+}
+
+.card.closed {
+  border-top: 4px solid purple;
+}
+
+
+.priority{
+  
+  display: flex;
+
+  justify-content: end;
+
+  font:bold;
+  color: rgb(0, 0, 0);
+
+  
+
+  
+}
+
+
+
